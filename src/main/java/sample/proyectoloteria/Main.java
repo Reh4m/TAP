@@ -8,6 +8,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import sample.proyectoloteria.views.Loteria;
+import sample.proyectoloteria.views.Parser;
 
 import java.io.IOException;
 
@@ -15,22 +16,28 @@ public class Main extends Application {
     private VBox v_box;
     private MenuBar menu_bar;
     private Menu comp1, comp2;
-    private MenuItem loteria_menu;
+    private MenuItem loteria_menu, parser_menu;
 
     @Override
     public void start(Stage stage) throws IOException {
         menu_bar = new MenuBar();
 
-        // Menu correspondiente a la vista Loteria.
+        // Sección competencia 1.
         comp1 = new Menu("Competencia 1");
+        // Menu correspondiente a la vista Loteria.
         loteria_menu = new MenuItem("Loteria");
         // Lanza un evento el cual instancia a la clase Loteria.
         loteria_menu.setOnAction(actionEvent -> {
             new Loteria();
         });
-        comp1.getItems().addAll(loteria_menu);
+        // Menu correspondiente a la vista Código morse.
+        parser_menu = new MenuItem("Código morse");
+        parser_menu.setOnAction(actionEvent -> {
+            new Parser();
+        });
+        comp1.getItems().addAll(loteria_menu, parser_menu);
 
-        // Menu correspondiente a... (pendiente).
+        // Sección competencia 2.
         comp2 = new Menu("Competencia 2");
 
         // Implementación de los menus (competencia 1 y 2).
