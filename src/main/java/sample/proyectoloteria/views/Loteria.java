@@ -103,11 +103,11 @@ public class Loteria extends Stage {
     }
 
     private void createTemplate() {
-        int current_images = 0;
+        int image_index = 0;
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 4; j++) {
                 BUTTONS[j][i] = new Button();
-                File file = new File("src/main/java/sample/proyectoloteria/assets/" + IMAGES[current_images]);
+                File file = new File("src/main/java/sample/proyectoloteria/assets/" + IMAGES[image_index]);
                 img_card_template = new Image(file.toURI().toString());
                 image_view = new ImageView(img_card_template);
                 image_view.setFitWidth(70);
@@ -115,7 +115,7 @@ public class Loteria extends Stage {
                 BUTTONS[j][i].setGraphic(image_view);
                 gdp_template.add(BUTTONS[j][i], i, j);
 
-                current_images++;
+                image_index++;
             }
         }
     }
