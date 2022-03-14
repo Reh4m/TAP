@@ -11,7 +11,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import sample.proyectoloteria.classes.Card;
 import sample.proyectoloteria.events.ButtonPlayClicked;
+import sample.proyectoloteria.models.LoteriaImages;
 
 import java.io.File;
 
@@ -26,17 +28,13 @@ public class Loteria extends Stage {
     private Image img_card_template;
     private ImageView image_view;
 
-    private final String[] IMAGES = {
-        "barril.jpeg",
-        "botella.jpeg",
-        "catrin.jpeg",
-        "chavorruco.jpeg",
-        "concha.jpeg",
-        "luchador.jpeg",
-        "botella.jpeg",
-        "tacos.jpeg",
-    };
-    private final Button[][] BUTTONS = new Button[4][2];
+    // Establece la plantilla actual que es mostrada.
+    // Así mismo, su valor cambia dependiendo la plantilla que esté en uso.
+    private int current_template = 0;
+
+    private final Card[][] TEMPLATES = LoteriaImages.TEMPLATES;
+    private final Button[][] BUTTONS = new Button[4][4];
+    private final String PATH = "src/main/java/sample/proyectoloteria/assets/";
 
     public Loteria() {
         createUI();
@@ -47,19 +45,26 @@ public class Loteria extends Stage {
 
     private void createUI() {
         // Área de selección de plantilla (botones).
+        // ...
+        // Manejar la plantilla anterior.
         btn_back = new Button("Atrás");
         btn_back.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println("back event");
+                prevTemplate();
+
+                showTemplate();
             }
         });
         btn_back.setPrefWidth(100);
+        // Manejar la plantilla siguiente.
         btn_next = new Button("Siguiente");
         btn_next.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println("next event");
+                nextTemplate();
+
+                showTemplate();
             }
         });
         btn_next.setPrefWidth(100);
@@ -75,8 +80,8 @@ public class Loteria extends Stage {
         // Grid Pane.
         gdp_template = new GridPane();
 
-        // Mostrar la carta actual.
-        createTemplate();
+        // Mostrar la primer carta (0).
+        showTemplate();
 
 //        img_card = new Image("");
 
@@ -86,12 +91,7 @@ public class Loteria extends Stage {
 
         // Botón jugar.
         btn_play = new Button("Jugar");
-        btn_play.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                System.out.println("Play event");
-            }
-        });
+        btn_play.addEventHandler(MouseEvent.MOUSE_CLICKED, new ButtonPlayClicked("Message"));
         btn_play.setPrefWidth(250);
 
         // Vertical box contenedor de botones y cartas.
@@ -102,21 +102,33 @@ public class Loteria extends Stage {
         scene = new Scene(v_box, 350, 580);
     }
 
-    private void createTemplate() {
+    private void showTemplate() {
         int image_index = 0;
-        for (int i = 0; i < 2; i++) {
+
+        for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 BUTTONS[j][i] = new Button();
-                File file = new File("src/main/java/sample/proyectoloteria/assets/" + IMAGES[image_index]);
-                img_card_template = new Image(file.toURI().toString());
-                image_view = new ImageView(img_card_template);
+                image_view = new ImageView();
                 image_view.setFitWidth(70);
                 image_view.setFitHeight(120);
+                image_view.setImage(TEMPLATES[current_template][image_index].getImage());
                 BUTTONS[j][i].setGraphic(image_view);
                 gdp_template.add(BUTTONS[j][i], i, j);
 
                 image_index++;
             }
         }
+    }
+
+    private void prevTemplate() {
+        current_template--;
+
+        if (current_template < 0) current_template = 4;
+    }
+
+    private void nextTemplate() {
+        current_template++;
+
+        if (current_template > 4) current_template = 0;
     }
 }
