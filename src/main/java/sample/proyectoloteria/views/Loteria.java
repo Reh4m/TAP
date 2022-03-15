@@ -1,6 +1,7 @@
 package sample.proyectoloteria.views;
 
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,14 +16,12 @@ import sample.proyectoloteria.classes.Card;
 import sample.proyectoloteria.events.ButtonPlayClicked;
 import sample.proyectoloteria.models.LoteriaImages;
 
-import java.io.File;
-
 public class Loteria extends Stage {
     private VBox v_box;
     private HBox h_box1, h_box2;
     private Button btn_back, btn_next, btn_play;
     private Label lbl_time;
-    private GridPane gdp_board;
+    private GridPane gdp_board, gdp_card;
     private Image img_card;
     private Scene scene;
     private Image img_card_boad;
@@ -52,7 +51,7 @@ public class Loteria extends Stage {
             public void handle(MouseEvent mouseEvent) {
                 prevBoard();
 
-                showBoard();
+                renderBoard();
             }
         });
         btn_back.setPrefWidth(100);
@@ -63,7 +62,7 @@ public class Loteria extends Stage {
             public void handle(MouseEvent mouseEvent) {
                 nextBoard();
 
-                showBoard();
+                renderBoard();
             }
         });
         btn_next.setPrefWidth(100);
@@ -79,14 +78,18 @@ public class Loteria extends Stage {
         // Grid Pane.
         gdp_board = new GridPane();
 
-        // Mostrar la primer plantilla (0).
-        showBoard();
+        gdp_card = new GridPane();
 
-//        img_card = new Image("");
+        // Mostrar la primer plantilla (0).
+        renderBoard();
+
+        // Mostrar las cartas de las plantillas.
+        renderCard();
 
         // Contenedor.
         h_box2 = new HBox();
-        h_box2.getChildren().addAll(gdp_board);
+        h_box2.setAlignment(Pos.CENTER);
+        h_box2.getChildren().addAll(gdp_board, gdp_card);
 
         // Botón jugar.
         btn_play = new Button("Jugar");
@@ -98,10 +101,20 @@ public class Loteria extends Stage {
         v_box.getChildren().addAll(h_box1, h_box2, btn_play);
 
         // Vista principal.
-        scene = new Scene(v_box, 350, 580);
+        scene = new Scene(v_box, 800, 600);
     }
 
-    private void showBoard() {
+    private void renderCard() {
+        Button card = new Button();
+        image_view = new ImageView();
+        image_view.setFitWidth(280);
+        image_view.setFitHeight(480);
+        image_view.setImage(BOARDS[0][0].getImage());
+        card.setGraphic(image_view);
+        gdp_card.add(card, 0, 0);
+    }
+
+    private void renderBoard() {
         int image_index = 0;
 
         for (int i = 0; i < 4; i++) {
