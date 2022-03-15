@@ -19,7 +19,7 @@ import sample.proyectoloteria.models.LoteriaImages;
 public class Loteria extends Stage {
     private VBox v_box;
     private HBox h_box1, h_box2, h_box3;
-    private Button btn_back, btn_next, btn_play;
+    private Button btn_prev, btn_next, btn_play;
     private Label lbl_time;
     private GridPane gdp_board, gdp_card;
     private Image img_card;
@@ -32,7 +32,7 @@ public class Loteria extends Stage {
     private int current_board = 0;
 
     private final Card[][] BOARDS = LoteriaImages.BOARDS;
-    private final Button[][] BUTTONS = new Button[4][4];
+    private Button[][] BUTTONS = new Button[4][4];
 
     public Loteria() {
         createUI();
@@ -45,8 +45,8 @@ public class Loteria extends Stage {
         // Área de selección de plantilla (botones).
         // ...
         // Manejar la plantilla anterior.
-        btn_back = new Button("Atrás");
-        btn_back.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        btn_prev = new Button("Atrás");
+        btn_prev.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 prevBoard();
@@ -54,7 +54,7 @@ public class Loteria extends Stage {
                 renderBoard();
             }
         });
-        btn_back.setPrefWidth(100);
+        btn_prev.setPrefWidth(100);
         // Manejar la plantilla siguiente.
         btn_next = new Button("Siguiente");
         btn_next.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -74,7 +74,7 @@ public class Loteria extends Stage {
         h_box1 = new HBox();
         h_box1.setSpacing(5);
         h_box1.setAlignment(Pos.CENTER);
-        h_box1.getChildren().addAll(btn_back, btn_next, lbl_time);
+        h_box1.getChildren().addAll(btn_prev, btn_next, lbl_time);
 
         // Grid Pane para las plantillas.
         gdp_board = new GridPane();
@@ -128,13 +128,10 @@ public class Loteria extends Stage {
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                BUTTONS[j][i] = new Button();
-                image_view = new ImageView();
+                image_view = new ImageView(BOARDS[current_board][image_index].getImage());
                 image_view.setFitWidth(70);
                 image_view.setFitHeight(120);
-                image_view.setImage(BOARDS[current_board][image_index].getImage());
-                BUTTONS[j][i].setGraphic(image_view);
-                gdp_board.add(BUTTONS[j][i], i, j);
+                gdp_board.add(image_view, i, j);
 
                 image_index++;
             }
