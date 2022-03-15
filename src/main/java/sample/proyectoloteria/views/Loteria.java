@@ -22,19 +22,18 @@ public class Loteria extends Stage {
     private HBox h_box1, h_box2;
     private Button btn_back, btn_next, btn_play;
     private Label lbl_time;
-    private GridPane gdp_template;
+    private GridPane gdp_board;
     private Image img_card;
     private Scene scene;
-    private Image img_card_template;
+    private Image img_card_boad;
     private ImageView image_view;
 
     // Establece la plantilla actual que es mostrada.
     // Así mismo, su valor cambia dependiendo la plantilla que esté en uso.
-    private int current_template = 0;
+    private int current_board = 0;
 
-    private final Card[][] TEMPLATES = LoteriaImages.TEMPLATES;
+    private final Card[][] BOARDS = LoteriaImages.BOARDS;
     private final Button[][] BUTTONS = new Button[4][4];
-    private final String PATH = "src/main/java/sample/proyectoloteria/assets/";
 
     public Loteria() {
         createUI();
@@ -51,9 +50,9 @@ public class Loteria extends Stage {
         btn_back.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                prevTemplate();
+                prevBoard();
 
-                showTemplate();
+                showBoard();
             }
         });
         btn_back.setPrefWidth(100);
@@ -62,9 +61,9 @@ public class Loteria extends Stage {
         btn_next.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                nextTemplate();
+                nextBoard();
 
-                showTemplate();
+                showBoard();
             }
         });
         btn_next.setPrefWidth(100);
@@ -78,16 +77,16 @@ public class Loteria extends Stage {
         h_box1.getChildren().addAll(btn_back, btn_next, lbl_time);
 
         // Grid Pane.
-        gdp_template = new GridPane();
+        gdp_board = new GridPane();
 
-        // Mostrar la primer carta (0).
-        showTemplate();
+        // Mostrar la primer plantilla (0).
+        showBoard();
 
 //        img_card = new Image("");
 
         // Contenedor.
         h_box2 = new HBox();
-        h_box2.getChildren().addAll(gdp_template);
+        h_box2.getChildren().addAll(gdp_board);
 
         // Botón jugar.
         btn_play = new Button("Jugar");
@@ -102,7 +101,7 @@ public class Loteria extends Stage {
         scene = new Scene(v_box, 350, 580);
     }
 
-    private void showTemplate() {
+    private void showBoard() {
         int image_index = 0;
 
         for (int i = 0; i < 4; i++) {
@@ -111,24 +110,24 @@ public class Loteria extends Stage {
                 image_view = new ImageView();
                 image_view.setFitWidth(70);
                 image_view.setFitHeight(120);
-                image_view.setImage(TEMPLATES[current_template][image_index].getImage());
+                image_view.setImage(BOARDS[current_board][image_index].getImage());
                 BUTTONS[j][i].setGraphic(image_view);
-                gdp_template.add(BUTTONS[j][i], i, j);
+                gdp_board.add(BUTTONS[j][i], i, j);
 
                 image_index++;
             }
         }
     }
 
-    private void prevTemplate() {
-        current_template--;
+    private void prevBoard() {
+        current_board--;
 
-        if (current_template < 0) current_template = 4;
+        if (current_board < 0) current_board = 4;
     }
 
-    private void nextTemplate() {
-        current_template++;
+    private void nextBoard() {
+        current_board++;
 
-        if (current_template > 4) current_template = 0;
+        if (current_board > 4) current_board = 0;
     }
 }

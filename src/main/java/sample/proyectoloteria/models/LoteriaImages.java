@@ -8,7 +8,7 @@ public class LoteriaImages {
      *
      * Se guardan en la clase Card para obtener información de la misma cuando sea requerido
      **/
-    public final static Card[][] TEMPLATES = {
+    public final static Card[][] BOARDS = {
         {
             new Card("bandolon", "bandolon.jpg", 1),
             new Card("barril", "barril.jpeg", 2),
