@@ -13,8 +13,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import sample.proyectoloteria.classes.Card;
+import sample.proyectoloteria.classes.TimerManagement;
 import sample.proyectoloteria.events.ButtonPlayClicked;
 import sample.proyectoloteria.models.LoteriaImages;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Loteria extends Stage {
     private VBox v_box;
@@ -31,8 +35,10 @@ public class Loteria extends Stage {
     // Así mismo, su valor cambia dependiendo la plantilla que esté en uso.
     private int current_board = 0;
 
+    private int current_card = 0;
+
     private final Card[][] BOARDS = LoteriaImages.BOARDS;
-    private Button[][] BUTTONS = new Button[4][4];
+    private final Card[] CARDS = LoteriaImages.CARDS;
 
     public Loteria() {
         createUI();
@@ -95,7 +101,12 @@ public class Loteria extends Stage {
 
         // Botón jugar.
         btn_play = new Button("Jugar");
-        btn_play.addEventHandler(MouseEvent.MOUSE_CLICKED, new ButtonPlayClicked("Message"));
+        btn_play.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                changeCard();
+            }
+        });
         btn_play.setPrefWidth(250);
 
         // Contenedor del botón jugar.
@@ -113,28 +124,28 @@ public class Loteria extends Stage {
         scene = new Scene(v_box, 800, 600);
     }
 
-    private void renderCard() {
-        Button card = new Button();
-        image_view = new ImageView();
-        image_view.setFitWidth(280);
-        image_view.setFitHeight(480);
-        image_view.setImage(BOARDS[0][0].getImage());
-        card.setGraphic(image_view);
-        gdp_card.add(card, 0, 0);
-    }
-
     private void renderBoard() {
-        int image_index = 0;
+        int rows = 0, cols = 0;
 
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                image_view = new ImageView(BOARDS[current_board][image_index].getImage());
-                image_view.setFitWidth(70);
-                image_view.setFitHeight(120);
-                gdp_board.add(image_view, i, j);
+        for (Card board : BOARDS[current_board]) {
+            image_view = new ImageView(board.getImage());
+            image_view.setFitWidth(70);
+            image_view.setFitHeight(120);
+            image_view.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    System.out.println(board.getCardName());
+                }
+            });
 
-                image_index++;
+            if (rows == 4) {
+                cols++;
+                rows = 0;
             }
+
+            gdp_board.add(image_view, cols, rows);
+
+            rows++;
         }
     }
 
@@ -148,5 +159,18 @@ public class Loteria extends Stage {
         current_board++;
 
         if (current_board > 4) current_board = 0;
+    }
+
+    private void renderCard() {
+        image_view = new ImageView((CARDS[current_card].getImage()));
+        image_view.setFitWidth(280);
+        image_view.setFitHeight(480);
+        gdp_card.add(image_view, 0, 0);
+    }
+
+    private void changeCard() {
+        current_card++;
+
+        renderCard();
     }
 }
