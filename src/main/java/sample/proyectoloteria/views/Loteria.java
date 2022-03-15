@@ -5,7 +5,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -13,12 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import sample.proyectoloteria.classes.Card;
-import sample.proyectoloteria.classes.TimerManagement;
-import sample.proyectoloteria.events.ButtonPlayClicked;
 import sample.proyectoloteria.models.LoteriaImages;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Loteria extends Stage {
     private VBox v_box;
@@ -26,18 +20,24 @@ public class Loteria extends Stage {
     private Button btn_prev, btn_next, btn_play;
     private Label lbl_time;
     private GridPane gdp_board, gdp_card;
-    private Image img_card;
     private Scene scene;
-    private Image img_card_boad;
     private ImageView image_view;
 
-    // Establece la plantilla actual que es mostrada.
-    // Así mismo, su valor cambia dependiendo la plantilla que esté en uso.
+    /**
+     * Define el número actual de la plantilla en uso.
+     **/
     private int current_board = 0;
 
-    private int current_card = 0;
+    /**
+     * Define el número actual de la carta mostrada en el mazo.
+     **/
+    private int current_card_image = 0;
 
-    private final Card[][] BOARDS = LoteriaImages.BOARDS;
+    /**
+     *  Proporciona los datos de la carta actual que se muestra en el mazo.
+     **/
+    private Card current_card_data;
+
     private final Card[] CARDS = LoteriaImages.CARDS;
 
     public Loteria() {
@@ -48,8 +48,6 @@ public class Loteria extends Stage {
     }
 
     private void createUI() {
-        // Área de selección de plantilla (botones).
-        // ...
         // Manejar la plantilla anterior.
         btn_prev = new Button("Atrás");
         btn_prev.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -91,7 +89,7 @@ public class Loteria extends Stage {
         // Mostrar la primer plantilla (0).
         renderBoard();
 
-        // Mostrar las cartas de las plantillas.
+        // Mostrar las cartas del mazo.
         renderCard();
 
         // Contenedor de las plantillas y las cartas.
@@ -124,17 +122,25 @@ public class Loteria extends Stage {
         scene = new Scene(v_box, 800, 600);
     }
 
+    /**
+     * Muestra en pantalla la plantilla del número actual com la ayuda de un GridPane.
+     *
+     * Las plantillas se obtienen de la clase LoteriaImages en la cual están establecidas las plantillas con su
+     * respectivo objeto carta (Card), el cual servirá para poder comparar cartas posteriormente.
+     *
+     * Al momento de seleccionar una carta de la plantilla se lanzará el método para comparar las cartas actuales.
+     **/
     private void renderBoard() {
         int rows = 0, cols = 0;
 
-        for (Card board : BOARDS[current_board]) {
-            image_view = new ImageView(board.getImage());
+        for (Card card : LoteriaImages.BOARDS[current_board]) {
+            image_view = new ImageView(card.getImage());
             image_view.setFitWidth(70);
             image_view.setFitHeight(120);
             image_view.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    System.out.println(board.getCardName());
+                    handleCardClicked(card);
                 }
             });
 
@@ -149,28 +155,76 @@ public class Loteria extends Stage {
         }
     }
 
+    /**
+     * Llama a el método validateCards y, en caso de que la igualdad sea verdadera, vuelve a cargar la plantilla
+     * completa con la diferencia de que la carta seleccionada ahora queda inhabilitada. En caso contrario solamente
+     * mostrará un mensaje por pantalla.
+     *
+     * @param card_clicked objeto Card con la información de la carta que fue seleccionada.
+     **/
+    private void handleCardClicked(Card card_clicked) {
+        if (validateCards(card_clicked)) {
+            LoteriaImages.disableSelectedCard(card_clicked, current_board);
+
+            renderBoard();
+        } else {
+            System.out.println("Board not match.");
+        }
+    }
+
+    /**
+     * Disminuye el índice de la plantilla que será mostrada.
+     *
+     * Cuando el índice llegue a cero se regresa a la última plantilla.
+     **/
     private void prevBoard() {
         current_board--;
 
         if (current_board < 0) current_board = 4;
     }
 
+    /**
+     * Aumenta el índice de la plantilla que será mostrada.
+     *
+     * Cuando el índice llegue a cuatro se regresa a la primer plantilla.
+     **/
     private void nextBoard() {
         current_board++;
 
         if (current_board > 4) current_board = 0;
     }
 
+    /**
+     * Muestra en pantalla las cartas del mazo.
+     *
+     * current_card_data se encarga de guardar los datos de la carta actual del mazo para posteriormente compararla.
+     **/
     private void renderCard() {
-        image_view = new ImageView((CARDS[current_card].getImage()));
+        image_view = new ImageView((CARDS[current_card_image].getImage()));
         image_view.setFitWidth(280);
         image_view.setFitHeight(480);
         gdp_card.add(image_view, 0, 0);
+
+        current_card_data = CARDS[current_card_image];
     }
 
+    /**
+     * Cambia a la siguiente carta del mazo.
+     **/
     private void changeCard() {
-        current_card++;
+        current_card_image++;
 
         renderCard();
+    }
+
+    /**
+     *  Válida la igualdad de la carta seleccionada en la plantilla con la carta actual mostrada en el mazo.
+     *
+     * @param board_card carta seleccionada en la plantilla.
+     *
+     * @return verdadero o falso si las cartas son iguales.
+     **/
+    private Boolean validateCards(Card board_card) {
+        return board_card.equals(current_card_data);
     }
 }
