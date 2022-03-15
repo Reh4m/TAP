@@ -18,7 +18,7 @@ import sample.proyectoloteria.models.LoteriaImages;
 
 public class Loteria extends Stage {
     private VBox v_box;
-    private HBox h_box1, h_box2;
+    private HBox h_box1, h_box2, h_box3;
     private Button btn_back, btn_next, btn_play;
     private Label lbl_time;
     private GridPane gdp_board, gdp_card;
@@ -70,14 +70,16 @@ public class Loteria extends Stage {
         // Marcador de tiempo para cambiar de carta.
         lbl_time = new Label("00:00");
 
-        // Contenedor de botones.
+        // Contenedor de botones controladores.
         h_box1 = new HBox();
         h_box1.setSpacing(5);
+        h_box1.setAlignment(Pos.CENTER);
         h_box1.getChildren().addAll(btn_back, btn_next, lbl_time);
 
-        // Grid Pane.
+        // Grid Pane para las plantillas.
         gdp_board = new GridPane();
 
+        // Grid Pane para las cartas.
         gdp_card = new GridPane();
 
         // Mostrar la primer plantilla (0).
@@ -86,7 +88,7 @@ public class Loteria extends Stage {
         // Mostrar las cartas de las plantillas.
         renderCard();
 
-        // Contenedor.
+        // Contenedor de las plantillas y las cartas.
         h_box2 = new HBox();
         h_box2.setAlignment(Pos.CENTER);
         h_box2.getChildren().addAll(gdp_board, gdp_card);
@@ -96,9 +98,16 @@ public class Loteria extends Stage {
         btn_play.addEventHandler(MouseEvent.MOUSE_CLICKED, new ButtonPlayClicked("Message"));
         btn_play.setPrefWidth(250);
 
-        // Vertical box contenedor de botones y cartas.
+        // Contenedor del botón jugar.
+        h_box3 = new HBox();
+        h_box3.setSpacing(5);
+        h_box3.setAlignment(Pos.CENTER);
+        h_box3.getChildren().addAll(btn_play);
+
+        // Layout principal.
+        // Contiene los botones, plantillas y cartas.
         v_box = new VBox();
-        v_box.getChildren().addAll(h_box1, h_box2, btn_play);
+        v_box.getChildren().addAll(h_box1, h_box2, h_box3);
 
         // Vista principal.
         scene = new Scene(v_box, 800, 600);
