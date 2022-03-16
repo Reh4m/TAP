@@ -4,6 +4,11 @@ import sample.proyectoloteria.classes.Card;
 
 public class LoteriaImages {
     /**
+     * Número de cartas totales que se tienen en el mazo.
+     **/
+    private static final int TOTAL_NUMBER_CARDS = 26;
+
+    /**
      * Total de plantillas que serán usadas por el jugador.
      *
      * Se guardan en la clase Card para obtener información de la misma cuando sea requerido.
@@ -161,7 +166,7 @@ public class LoteriaImages {
      *
      * Define el mazo que será mostrado en pantalla.
      **/
-    private static final Card[] random_cards = new Card[25];
+    private static final Card[] random_cards = new Card[TOTAL_NUMBER_CARDS];
 
     /**
      * Llena el arreglo random_cards con objetos Card que son generados automáticamente. El ciclo while sirve para
