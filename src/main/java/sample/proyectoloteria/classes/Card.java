@@ -11,6 +11,12 @@ public class Card {
     private String image_name;
     private int id;
 
+    /**
+     * Define las coordenadas donde se encuentra ubicada la carta en el tablero.
+     **/
+    private int axis_x;
+    private int axis_y;
+
     private final String IMAGES_PATH = "src/main/java/sample/proyectoloteria/assets/";
 
     /**
@@ -71,6 +77,30 @@ public class Card {
         }
 
         return new Image(image);
+    }
+
+    /**
+     * Establece la ubicación de la carta en la plantilla.
+     **/
+    public void setCardCoords(int axis_x, int axis_y) {
+        setAxisX(axis_x);
+        setAxisY(axis_y);
+    }
+
+    public int getAxisX() {
+        return axis_x;
+    }
+
+    public void setAxisX(int axis_x) {
+        this.axis_x = axis_x;
+    }
+
+    public int getAxisY() {
+        return axis_y;
+    }
+
+    public void setAxisY(int axis_y) {
+        this.axis_y = axis_y;
     }
 
     @Override
