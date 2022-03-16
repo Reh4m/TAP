@@ -153,4 +153,73 @@ public class LoteriaImages {
     public static Card getDisableCard() {
         return new Card("frijol", "frijol.jpg", 0);
     }
+
+
+    /**
+     * El arreglo será llenado con cartas de manera aleatoria y sin repetirse alguna.
+     *
+     * Define el mazo que será mostrado en pantalla.
+     **/
+    private static final Card[] random_cards = new Card[25];
+
+    /**
+     * Llena el arreglo random_cards con objetos Card que son generados automáticamente. El ciclo while sirve para
+     * llenar cada campo del arreglo verificando que no se repita alguna carta ya establecida, en caso de repetirse, el
+     * ciclo seguirá hasta encontrar una carta que no ha sido añadida.
+     *
+     * @return arreglo de cartas aleatorias que serán usadas en el mazo.
+     **/
+    public static Card[] getRandomCards() {
+        Card random_card;
+
+        int cards_added = 0;
+
+        while (cards_added < random_cards.length) {
+            random_card = generateRandomCard();
+
+            if (cards_added < 1) {
+                random_cards[cards_added] = random_card;
+
+                cards_added++;
+            }
+
+            if (!checkRepeatCard(random_card, cards_added)) {
+                random_cards[cards_added] = random_card;
+
+                cards_added++;
+            }
+        }
+
+        return random_cards;
+    }
+
+
+    /**
+     * Comprueba que la carta aleatoria generada no se encuentra ya añadida en el arreglo random_cards. En caso de que
+     * ambas cartas no sean iguales se podrá añadir la carta al arreglo.
+     *
+     * @param random_card carta generada aleatoriamente.
+     * @param current_cards_added número de tarjetas añadidas hasta el momento, este servirá para recorrer el arreglo
+     *                            solo hasta el índice donde se agregó la última carta.
+     *
+     * @return valor booleano especificando si la carta generada ya está en el arreglo.
+     **/
+    private static boolean checkRepeatCard(Card random_card, int current_cards_added) {
+        for (int i = 0; i < current_cards_added; i++) {
+            if (random_cards[i].equals(random_card)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Toma una carta de manera aleatoria procedente del arreglo CARDS para ser usada en el mazo.
+     *
+     * @return una carta aleatoria.
+     **/
+    private static Card generateRandomCard() {
+        return CARDS[(int) (Math.random() * CARDS.length)];
+    }
 }
