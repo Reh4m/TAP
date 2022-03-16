@@ -1,5 +1,11 @@
 package sample.proyectoloteria.views;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,8 +17,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import sample.proyectoloteria.classes.Card;
 import sample.proyectoloteria.models.LoteriaImages;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Loteria extends Stage {
     private VBox v_box;
@@ -22,6 +32,8 @@ public class Loteria extends Stage {
     private GridPane gdp_board, gdp_card;
     private Scene scene;
     private ImageView image_view;
+    private Timeline time_line;
+    private Timer timer;
 
     /**
      * Define el número actual de la plantilla en uso.
@@ -38,7 +50,10 @@ public class Loteria extends Stage {
      **/
     private Card current_card_data;
 
-    private final Card[] CARDS = LoteriaImages.CARDS;
+    private final Integer START_TIME = 15;
+    private final IntegerProperty time_seconds = new SimpleIntegerProperty(START_TIME);
+
+    private final Card[] CARDS = LoteriaImages.getRandomCards();
 
     public Loteria() {
         createUI();
@@ -72,7 +87,8 @@ public class Loteria extends Stage {
         btn_next.setPrefWidth(100);
 
         // Marcador de tiempo para cambiar de carta.
-        lbl_time = new Label("00:00");
+        lbl_time = new Label();
+        lbl_time.textProperty().bind(time_seconds.asString());
 
         // Contenedor de botones controladores.
         h_box1 = new HBox();
@@ -86,10 +102,10 @@ public class Loteria extends Stage {
         // Grid Pane para las cartas.
         gdp_card = new GridPane();
 
-        // Mostrar la primer plantilla (0).
+        // Muestra la primer plantilla (0).
         renderBoard();
 
-        // Mostrar las cartas del mazo.
+        // Muestra la primer carta del mazo.
         renderCard();
 
         // Contenedor de las plantillas y las cartas.
@@ -98,11 +114,14 @@ public class Loteria extends Stage {
         h_box2.getChildren().addAll(gdp_board, gdp_card);
 
         // Botón jugar.
+        // Empieza a sacar cartas del mazo y deshabilita el boton cuando este es presionado.
         btn_play = new Button("Jugar");
         btn_play.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                changeCard();
+                btn_play.setDisable(true);
+
+                changeCardTimer();
             }
         });
         btn_play.setPrefWidth(250);
@@ -114,7 +133,7 @@ public class Loteria extends Stage {
         h_box3.getChildren().addAll(btn_play);
 
         // Layout principal.
-        // Contiene los botones, plantillas y cartas.
+        // Contiene a los botones, plantillas y cartas.
         v_box = new VBox();
         v_box.getChildren().addAll(h_box1, h_box2, h_box3);
 
@@ -123,7 +142,7 @@ public class Loteria extends Stage {
     }
 
     /**
-     * Muestra en pantalla la plantilla del número actual com la ayuda de un GridPane.
+     * Muestra en pantalla la plantilla del número actual con la ayuda de un GridPane.
      *
      * Las plantillas se obtienen de la clase LoteriaImages en la cual están establecidas las plantillas con su
      * respectivo objeto carta (Card), el cual servirá para poder comparar cartas posteriormente.
@@ -156,7 +175,7 @@ public class Loteria extends Stage {
     }
 
     /**
-     * Llama a el método validateCards y, en caso de que la igualdad sea verdadera, vuelve a cargar la plantilla
+     * Llama al método validateCards y, en caso de que la igualdad sea verdadera, vuelve a cargar la plantilla
      * completa con la diferencia de que la carta seleccionada ahora queda inhabilitada. En caso contrario solamente
      * mostrará un mensaje por pantalla.
      *
@@ -168,14 +187,14 @@ public class Loteria extends Stage {
 
             renderBoard();
         } else {
-            System.out.println("Board not match.");
+            System.out.println("Card not match.");
         }
     }
 
     /**
      * Disminuye el índice de la plantilla que será mostrada.
      *
-     * Cuando el índice llegue a cero se regresa a la última plantilla.
+     * Cuando el índice llega a cero se regresa a la última plantilla.
      **/
     private void prevBoard() {
         current_board--;
@@ -226,5 +245,49 @@ public class Loteria extends Stage {
      **/
     private Boolean validateCards(Card board_card) {
         return board_card.equals(current_card_data);
+    }
+
+    /**
+     * Muestra una cuenta regresiva de 15 segundos, el cual indica el tiempo dado para ir marcando cartas con la carta
+     * actual que aparecen el mazo.
+     **/
+    private void startCountDownTimer() {
+        if (time_line != null) time_line.stop();
+
+        time_seconds.set(START_TIME);
+
+        time_line = new Timeline();
+        time_line.getKeyFrames().add(
+            new KeyFrame(Duration.seconds(START_TIME + 1),
+            new KeyValue(time_seconds, 0))
+        );
+        time_line.playFromStart();
+    }
+
+    /**
+     * Empieza a sacar las cartas del mazo (arreglo de cartas) cada 15 segundos. El proceso se cicla hasta que haya
+     * terminado de mostrar todas las cartas y, una vez llegado ese momento, el timer se detiene y el botón jugar se
+     * vuelve a habilitar.
+     **/
+    private void changeCardTimer() {
+        timer = new Timer();
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if (current_card_image < CARDS.length) {
+                    Platform.runLater(() -> {
+                        changeCard();
+
+                        startCountDownTimer();
+                    });
+                } else {
+                    timer.cancel();
+                    btn_play.setDisable(false);
+                }
+            }
+        };
+
+        timer.scheduleAtFixedRate(task, 0, 15000);
     }
 }
