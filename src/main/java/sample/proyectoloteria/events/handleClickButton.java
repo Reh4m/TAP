@@ -3,10 +3,10 @@ package sample.proyectoloteria.events;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 
-public class ButtonPlayClicked implements EventHandler {
+public class handleClickButton implements EventHandler {
     public String message;
 
-    public ButtonPlayClicked(String message) {
+    public handleClickButton(String message) {
         this.message = message;
     }
 
