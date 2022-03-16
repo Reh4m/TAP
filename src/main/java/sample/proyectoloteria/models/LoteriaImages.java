@@ -101,6 +101,7 @@ public class LoteriaImages {
      * Cartas que serán utilizadas en el mazo.
      **/
     public final static Card[] CARDS = {
+            new Card("reverso", "reverso.jpg", 0),
             new Card("bandolon", "bandolon.jpg", 1),
             new Card("barril", "barril.jpeg", 2),
             new Card("botella", "botella.jpeg", 3),
@@ -177,8 +178,10 @@ public class LoteriaImages {
         while (cards_added < random_cards.length) {
             random_card = generateRandomCard();
 
+            // La primer carta del arreglo siempre será la carta volteada, esto para dar la impresión de que todavía
+            // no se barajea el mazo.
             if (cards_added < 1) {
-                random_cards[cards_added] = random_card;
+                random_cards[0] = CARDS[0];
 
                 cards_added++;
             }
