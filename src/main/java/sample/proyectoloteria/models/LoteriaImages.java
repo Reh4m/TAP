@@ -138,17 +138,11 @@ public class LoteriaImages {
      * Deshabilita la carta de la plantilla previamente seleccionada y verificada su igualdad con la carta actual del
      * mazo.
      *
-     * @param old_card objeto Card que será inhabilitada.
-     * @param row índice o fila donde se encuentra la carta dentro de la matriz de plantillas.
+     * @param old_card objeto Card que será inhabilitado.
+     * @param board_number número de plantilla donde se encuentra la carta.
      **/
-    public static void disableSelectedCard(Card old_card, int row) {
-        for (int cols = 0; cols < BOARDS[row].length; cols++) {
-            if (BOARDS[row][cols].equals(old_card)) {
-                BOARDS[row][cols] = getDisableCard();
-
-                break;
-            }
-        }
+    public static void disableSelectedCard(Card old_card, int board_number) {
+        BOARDS[board_number][old_card.getIndexCardAdded()] = getDisableCard();
     }
 
     /**
