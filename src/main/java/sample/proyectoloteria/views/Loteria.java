@@ -153,11 +153,20 @@ public class Loteria extends Stage {
      * Al momento de seleccionar una carta de la plantilla se lanzará el método para comparar las cartas actuales.
      **/
     private void renderBoard() {
-        int rows = 0, cols = 0, counter = 0;
+        // row y col establecen la posición de una carta dentro de la plantilla.
+        // counter se encarga de contar el número de cartas añadidas a la plantilla.
+        int row = 0, col = 0, counter = 0;
 
         for (Card card : LoteriaImages.BOARDS[current_board]) {
+            // Al llegar a la cuarta fila se pasa a la siguiente columna desde la fila 0 nuevamente.
+            if (row == 4) {
+                col++;
+                row = 0;
+            }
+
+            // Se establecen los datos de la carta dentro de la plantilla.
             card.setIndexCardAdded(counter);
-            card.setCardCoords(cols, rows);
+            card.setCardCoords(col, row);
 
             image_view = new ImageView(card.getImage());
             image_view.setFitWidth(70);
@@ -169,14 +178,11 @@ public class Loteria extends Stage {
                 }
             });
 
-            if (rows == 4) {
-                cols++;
-                rows = 0;
-            }
+            gdp_board.add(image_view, col, row);
 
-            gdp_board.add(image_view, cols, rows);
-
-            rows++;
+            // Por cada iteración las filas aumentan hasta llegar a 4.
+            row++;
+            // El contador de cartas aumenta.
             counter++;
         }
     }
