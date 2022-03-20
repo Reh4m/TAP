@@ -17,6 +17,13 @@ public class Card {
     private int axis_x;
     private int axis_y;
 
+    /**
+     * Define el índice de la carta al momento de ser añadido a una plantilla.
+     *
+     * Este nos ayudará a saber dónde se encuentra una carta dentro de una plantilla cualquiera.
+     **/
+    private int index_card_added;
+
     private final String IMAGES_PATH = "src/main/java/sample/proyectoloteria/assets/";
 
     /**
@@ -101,6 +108,14 @@ public class Card {
 
     public void setAxisY(int axis_y) {
         this.axis_y = axis_y;
+    }
+
+    public int getIndexCardAdded() {
+        return index_card_added;
+    }
+
+    public void setIndexCardAdded(int index_card_added) {
+        this.index_card_added = index_card_added;
     }
 
     @Override
