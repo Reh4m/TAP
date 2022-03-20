@@ -292,7 +292,7 @@ public class Loteria extends Stage {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                if (current_card_image < CARDS.length) {
+                if (current_card_image < CARDS.length - 1) {
                     Platform.runLater(() -> {
                         changeCard();
 
