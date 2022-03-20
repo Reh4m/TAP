@@ -144,15 +144,21 @@ public class Loteria extends Stage {
     /**
      * Muestra en pantalla la plantilla del número actual con la ayuda de un GridPane.
      *
-     * Las plantillas se obtienen de la clase LoteriaImages en la cual están establecidas las plantillas con su
+     * Las plantillas se obtienen de la clase LoteriaImages previamente ya definidas las plantillas con su
      * respectivo objeto carta (Card), el cual servirá para poder comparar cartas posteriormente.
+     *
+     * Dentro de la clase Card se guardan datos como la posición donde se encuentra ubicada la carta en la plantilla,
+     * así como el índice en el que este fue agregado a la plantilla.
      *
      * Al momento de seleccionar una carta de la plantilla se lanzará el método para comparar las cartas actuales.
      **/
     private void renderBoard() {
-        int rows = 0, cols = 0;
+        int rows = 0, cols = 0, counter = 0;
 
         for (Card card : LoteriaImages.BOARDS[current_board]) {
+            card.setIndexCardAdded(counter);
+            card.setCardCoords(cols, rows);
+
             image_view = new ImageView(card.getImage());
             image_view.setFitWidth(70);
             image_view.setFitHeight(120);
@@ -171,12 +177,13 @@ public class Loteria extends Stage {
             gdp_board.add(image_view, cols, rows);
 
             rows++;
+            counter++;
         }
     }
 
     /**
-     * Llama al método validateCards y, en caso de que la igualdad sea verdadera, vuelve a cargar la plantilla
-     * completa con la diferencia de que la carta seleccionada ahora queda inhabilitada. En caso contrario solamente
+     * Llama al método validateCards y, en caso de que la igualdad sea verdadera, reescribe el GridPane solamente en la
+     * posición donde se encuentra la carta seleccionada, inhabilitando a la misma. En caso contrario solamente
      * mostrará un mensaje por pantalla.
      *
      * @param card_clicked objeto Card con la información de la carta que fue seleccionada.
@@ -185,7 +192,11 @@ public class Loteria extends Stage {
         if (validateCards(card_clicked)) {
             LoteriaImages.disableSelectedCard(card_clicked, current_board);
 
-            renderBoard();
+            image_view = new ImageView(LoteriaImages.getDisableCard().getImage());
+            image_view.setFitWidth(70);
+            image_view.setFitHeight(120);
+
+            gdp_board.add(image_view, card_clicked.getAxisX(), card_clicked.getAxisY());
         } else {
             System.out.println("Card not match.");
         }
