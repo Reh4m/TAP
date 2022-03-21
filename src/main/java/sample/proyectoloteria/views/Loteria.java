@@ -33,7 +33,7 @@ public class Loteria extends Stage {
     private Scene scene;
     private ImageView image_view;
     private Timeline time_line;
-    private Timer timer;
+    private final Timer timer = new Timer();
 
     /**
      * Define el número actual de la plantilla en uso.
@@ -189,8 +189,12 @@ public class Loteria extends Stage {
 
     /**
      * Llama al método validateCards y, en caso de que la igualdad sea verdadera, reescribe el GridPane solamente en la
-     * posición donde se encuentra la carta seleccionada, inhabilitando a la misma. En caso contrario solamente
-     * mostrará un mensaje por pantalla.
+     * posición donde se encuentra la carta seleccionada, inhabilitando a la misma. Posteriormente verifica si la
+     * plantilla actual cuenta con todas sus cartas deshabilitadas, lo cual quiere decir que la plantilla ya ha ganado
+     * y el juego ha terminado.
+     *
+     * En caso contrario, si la carta seleccionada no es igual a la carta mostrada en el mazo, solamente mostrará un
+     * mensaje por pantalla.
      *
      * @param card_clicked objeto Card con la información de la carta que fue seleccionada.
      **/
@@ -203,6 +207,13 @@ public class Loteria extends Stage {
             image_view.setFitHeight(120);
 
             gdp_board.add(image_view, card_clicked.getAxisX(), card_clicked.getAxisY());
+
+            if (checkIfUserWon()) {
+                timer.cancel();
+                time_line.stop();
+                btn_play.setText("Juego terminado");
+                System.out.println("Plantilla " + current_board + " ganó.");
+            }
         } else {
             System.out.println("Card not match.");
         }
@@ -287,8 +298,6 @@ public class Loteria extends Stage {
      * vuelve a habilitar.
      **/
     private void changeCardTimer() {
-        timer = new Timer();
-
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -300,11 +309,32 @@ public class Loteria extends Stage {
                     });
                 } else {
                     timer.cancel();
-                    btn_play.setDisable(false);
+                    btn_play.setText("Juego terminado");
                 }
             }
         };
 
         timer.scheduleAtFixedRate(task, 0, 15000);
+    }
+
+    /**
+     * Verifica si una plantilla ya ganó comprobando el estatus de sus cartas (cartas deshabilitadas).
+     *
+     * @return verdadero o falso al comparar las cartas deshabilitadas con el número total de cartas en la plantilla.
+     **/
+    private boolean checkIfUserWon() {
+        int disabled_cards = 0;
+
+        // Recorre todas las cartas de la plantilla actual y va sumando el número de cartas deshabilitadas que tiene la
+        // plantilla.
+        for (Card card : LoteriaImages.BOARDS[current_board]) {
+            if (card.getStatusCard()) disabled_cards++;
+        }
+
+        // Si el número de cartas deshabilitadas es igual al número de cartas de la plantilla (16), quiere decir que
+        // todas las cartas de la plantilla ya fueron seleccionadas y mostradas en el mazo, obteniendo así un ganador.
+        // Caso contrario, todas las cartas de la plantilla aún no son seleccionadas o mostradas en el maso, por lo
+        // tanto la plantilla aún no gana.
+        return disabled_cards == LoteriaImages.BOARDS[0].length;
     }
 }

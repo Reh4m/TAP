@@ -151,9 +151,12 @@ public class LoteriaImages {
      * @return un objeto Card con una nueva imagen.
      **/
     public static Card getDisableCard() {
-        return new Card("frijol", "frijol.jpg", 0);
-    }
+        Card disable_card = new Card("frijol", "frijol.jpg", 0);
 
+        disable_card.disableCard();
+
+        return disable_card;
+    }
 
     /**
      * El arreglo será llenado con cartas de manera aleatoria y sin repetirse alguna.
@@ -194,7 +197,6 @@ public class LoteriaImages {
 
         return random_cards;
     }
-
 
     /**
      * Comprueba que la carta aleatoria generada no se encuentra ya añadida en el arreglo random_cards. En caso de que
