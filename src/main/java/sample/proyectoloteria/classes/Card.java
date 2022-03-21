@@ -12,6 +12,12 @@ public class Card {
     private int id;
 
     /**
+     * Define el estatus de la carta en la plantilla. Este cambia una vez que se selecciona la carta y se comprueba su
+     * igualdad con la carta actual mostrada en el mazo.
+     **/
+    private boolean is_disabled = false;
+
+    /**
      * Define las coordenadas donde se encuentra ubicada la carta en el tablero.
      **/
     private int axis_x;
@@ -116,6 +122,17 @@ public class Card {
 
     public void setIndexCardAdded(int index_card_added) {
         this.index_card_added = index_card_added;
+    }
+
+    public boolean getStatusCard() {
+        return is_disabled;
+    }
+
+    /**
+     * Deshabilita la carta seleccionada, comprobando previamente que esta sea la misma carta mostrada en el mazo.
+     **/
+    public void disableCard() {
+        this.is_disabled = true;
     }
 
     @Override
