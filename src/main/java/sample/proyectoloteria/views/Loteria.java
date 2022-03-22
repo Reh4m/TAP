@@ -308,8 +308,10 @@ public class Loteria extends Stage {
                         startCountDownTimer();
                     });
                 } else {
-                    timer.cancel();
-                    btn_play.setText("Juego terminado");
+                    Platform.runLater(() -> {
+                        timer.cancel();
+                        btn_play.setText("Juego terminado");
+                    });
                 }
             }
         };
