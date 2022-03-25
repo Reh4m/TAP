@@ -17,6 +17,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sample.proyectoloteria.classes.Card;
@@ -27,7 +32,7 @@ import java.util.TimerTask;
 
 public class Loteria extends Stage {
     private VBox v_box_container;
-    private HBox h_box1, h_box2, h_box3;
+    private HBox h_box_title, h_box1, h_box2, h_box3;
     private Button btn_prev, btn_next, btn_play;
     private Label lbl_time;
     private GridPane gdp_board, gdp_card;
@@ -65,6 +70,15 @@ public class Loteria extends Stage {
     }
 
     private void createUI() {
+        Text title = new Text("Loteria Mexicana");
+        title.setFont(Font.font("Times New Roman", FontWeight.LIGHT, FontPosture.REGULAR, 45));
+        title.setFill(Color.BLACK);
+
+        h_box_title = new HBox();
+        h_box_title.setAlignment(Pos.CENTER);
+        h_box_title.setPadding(new Insets(15, 0, 15, 0));
+        h_box_title.getChildren().add(title);
+
         // Manejar la plantilla anterior.
         btn_prev = new Button("Atrás");
         btn_prev.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -96,7 +110,6 @@ public class Loteria extends Stage {
         h_box1 = new HBox();
         h_box1.setSpacing(5);
         h_box1.setAlignment(Pos.CENTER);
-        h_box1.setPadding(new Insets(15));
         h_box1.getChildren().addAll(btn_prev, btn_next, lbl_time);
 
         // Grid Pane para las plantillas.
@@ -145,14 +158,13 @@ public class Loteria extends Stage {
         // Contiene a los botones, plantillas y cartas.
         v_box_container = new VBox();
         v_box_container.getStyleClass().add("bg-3");
-        v_box_container.getChildren().addAll(h_box1, h_box2, h_box3);
+        v_box_container.getChildren().addAll(h_box_title, h_box1, h_box2, h_box3);
 
-        // Hoja de estilos CSS.
-        String style_sheet = getClass().getResource("/style.css").toExternalForm();
 
         // Vista principal.
         scene = new Scene(v_box_container, 800, 600);
-        scene.getStylesheets().add(style_sheet);
+        // Hoja de estilos CSS.
+        scene.getStylesheets().add(String.valueOf(this.getClass().getResource("/style.css")));
     }
 
     /**
