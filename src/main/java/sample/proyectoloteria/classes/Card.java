@@ -86,6 +86,7 @@ public class Card {
             image = new FileInputStream(IMAGES_PATH + this.image_name);
         } catch (FileNotFoundException e) {
             System.err.println("Could not open file.");
+            System.err.println(e.getMessage());
             System.exit(0);
         }
 
