@@ -70,7 +70,7 @@ public class Loteria extends Stage {
     }
 
     private void createUI() {
-        Text title = new Text("Loteria Mexicana");
+        Text title = new Text("Juego Loteria Mexicana");
         title.setFont(Font.font("Times New Roman", FontWeight.LIGHT, FontPosture.REGULAR, 45));
         title.setFill(Color.BLACK);
 

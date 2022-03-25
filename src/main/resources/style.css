@@ -21,3 +21,10 @@
 .bg-6 {
     -fx-background-color: #c4c4ff;
 }
+
+Button {
+    -fx-background-color: #f8f9fa;
+    -fx-font: 14px "serief";
+    -fx-padding: 10;
+    -fx-cursor: pointer;
+}
