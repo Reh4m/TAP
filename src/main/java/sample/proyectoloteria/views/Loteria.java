@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -57,7 +58,8 @@ public class Loteria extends Stage {
 
     public Loteria() {
         createUI();
-        this.setTitle("Loteria");
+        this.setTitle("Loteria Mexicana");
+        this.setMaximized(true);
         this.setScene(scene);
         this.show();
     }
@@ -94,13 +96,20 @@ public class Loteria extends Stage {
         h_box1 = new HBox();
         h_box1.setSpacing(5);
         h_box1.setAlignment(Pos.CENTER);
+        h_box1.setPadding(new Insets(15));
         h_box1.getChildren().addAll(btn_prev, btn_next, lbl_time);
 
         // Grid Pane para las plantillas.
         gdp_board = new GridPane();
+        gdp_board.setPadding(new Insets(15, 15, 15, 15));
+        gdp_board.setHgap(15);
+        gdp_board.setVgap(15);
 
         // Grid Pane para las cartas.
         gdp_card = new GridPane();
+        gdp_card.setPadding(new Insets(15, 15, 15, 15));
+        gdp_card.setHgap(15);
+        gdp_card.setVgap(15);
 
         // Muestra la primer plantilla (0).
         renderBoard();
@@ -135,10 +144,15 @@ public class Loteria extends Stage {
         // Layout principal.
         // Contiene a los botones, plantillas y cartas.
         v_box = new VBox();
+        v_box.getStyleClass().add("bg-3");
         v_box.getChildren().addAll(h_box1, h_box2, h_box3);
+
+        // Hoja de estilos CSS.
+        String style_sheet = getClass().getResource("/style.css").toExternalForm();
 
         // Vista principal.
         scene = new Scene(v_box, 800, 600);
+        scene.getStylesheets().add(style_sheet);
     }
 
     /**
@@ -248,8 +262,8 @@ public class Loteria extends Stage {
      **/
     private void renderCard() {
         image_view = new ImageView((CARDS[current_card_image].getImage()));
-        image_view.setFitWidth(280);
-        image_view.setFitHeight(480);
+        image_view.setFitWidth(320);
+        image_view.setFitHeight(525);
         gdp_card.add(image_view, 0, 0);
 
         current_card_data = CARDS[current_card_image];
