@@ -26,7 +26,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Loteria extends Stage {
-    private VBox v_box;
+    private VBox v_box_container;
     private HBox h_box1, h_box2, h_box3;
     private Button btn_prev, btn_next, btn_play;
     private Label lbl_time;
@@ -143,15 +143,15 @@ public class Loteria extends Stage {
 
         // Layout principal.
         // Contiene a los botones, plantillas y cartas.
-        v_box = new VBox();
-        v_box.getStyleClass().add("bg-3");
-        v_box.getChildren().addAll(h_box1, h_box2, h_box3);
+        v_box_container = new VBox();
+        v_box_container.getStyleClass().add("bg-3");
+        v_box_container.getChildren().addAll(h_box1, h_box2, h_box3);
 
         // Hoja de estilos CSS.
         String style_sheet = getClass().getResource("/style.css").toExternalForm();
 
         // Vista principal.
-        scene = new Scene(v_box, 800, 600);
+        scene = new Scene(v_box_container, 800, 600);
         scene.getStylesheets().add(style_sheet);
     }
 
