@@ -160,7 +160,6 @@ public class Loteria extends Stage {
         v_box_container.getStyleClass().add("bg-3");
         v_box_container.getChildren().addAll(h_box_title, h_box1, h_box2, h_box3);
 
-
         // Vista principal.
         scene = new Scene(v_box_container, 800, 600);
         // Hoja de estilos CSS.
@@ -217,7 +216,7 @@ public class Loteria extends Stage {
      * Llama al método validateCards y, en caso de que la igualdad sea verdadera, reescribe el GridPane solamente en la
      * posición donde se encuentra la carta seleccionada, inhabilitando a la misma. Posteriormente verifica si la
      * plantilla actual cuenta con todas sus cartas deshabilitadas, lo cual quiere decir que la plantilla ya ha ganado
-     * y el juego ha terminado.
+     * y el juego ha terminado, mostrando así un mensaje de victoria.
      *
      * En caso contrario, si la carta seleccionada no es igual a la carta mostrada en el mazo, solamente mostrará un
      * mensaje por pantalla.
@@ -238,7 +237,7 @@ public class Loteria extends Stage {
                 timer.cancel();
                 time_line.stop();
                 btn_play.setText("Juego terminado");
-                System.out.println("Plantilla " + current_board + " ganó.");
+                showWinnerMessage();
             }
         } else {
             System.out.println("Card not match.");
@@ -320,8 +319,11 @@ public class Loteria extends Stage {
 
     /**
      * Empieza a sacar las cartas del mazo (arreglo de cartas) cada 15 segundos. El proceso se cicla hasta que haya
-     * terminado de mostrar todas las cartas y, una vez llegado ese momento, el timer se detiene y el botón jugar se
-     * vuelve a habilitar.
+     * terminado de mostrar todas las cartas o cuando una tabla resulte ganadora, una vez llegado ese momento el timer
+     * se detiene.
+     *
+     * Si todas las cartas del mazo ya han sido mostradas quiere decir que ninguna tabla ganó, por lo tanto se muestra
+     * un mensaje de que ninguna tabla resultó ganadora y el juego ya ha terminado.
      **/
     private void changeCardTimer() {
         TimerTask task = new TimerTask() {
@@ -337,6 +339,7 @@ public class Loteria extends Stage {
                     Platform.runLater(() -> {
                         timer.cancel();
                         btn_play.setText("Juego terminado");
+                        showGameOverMessage();
                     });
                 }
             }
@@ -364,5 +367,31 @@ public class Loteria extends Stage {
         // Caso contrario, todas las cartas de la plantilla aún no son seleccionadas o mostradas en el maso, por lo
         // tanto la plantilla aún no gana.
         return disabled_cards == LoteriaImages.BOARDS[0].length;
+    }
+
+    /**
+     * Muestra una ventana al momento de que una tabla resulta ganadora. Aporta un mensaje de victoria con el número de
+     * tabla que ganó.
+     **/
+    private void showWinnerMessage() {
+        String message1, message2;
+
+        message1 = "¡Felicidades!";
+        message2 = "Tabla #" + (current_board + 1) + " ha ganado la partida";
+
+        new GameOver(message1, message2);
+    }
+
+    /**
+     * Muestra una ventana al momento de que todas las cartas del mazo ya fueron mostradas y no se obtuvo una tabla
+     * ganadora.
+     **/
+    private void showGameOverMessage() {
+        String message1, message2;
+
+        message1 = "¡Juego terminado!";
+        message2 = "Ninguna tabla resultó ganadora";
+
+        new GameOver(message1, message2);
     }
 }
