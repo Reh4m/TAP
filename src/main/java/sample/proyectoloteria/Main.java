@@ -24,9 +24,9 @@ public class Main extends Application {
 
         // Sección competencia 1.
         comp1 = new Menu("Competencia 1");
-        // Menu correspondiente a la vista Loteria.
-        loteria_menu = new MenuItem("Loteria");
-        // Lanza un evento el cual instancia a la clase Loteria.
+        // Menu correspondiente a la vista Lotería.
+        loteria_menu = new MenuItem("Lotería");
+        // Lanza un evento el cual instancia a la clase Lotería.
         loteria_menu.setOnAction(actionEvent -> {
             new Loteria();
         });

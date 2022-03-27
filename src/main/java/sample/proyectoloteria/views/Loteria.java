@@ -68,7 +68,7 @@ public class Loteria extends Stage {
 
     public Loteria() {
         createUI();
-        this.setTitle("Loteria Mexicana");
+        this.setTitle("Lotería Mexicana");
         this.setMaximized(true);
         this.setScene(scene);
         this.show();
@@ -77,7 +77,7 @@ public class Loteria extends Stage {
     private void createUI() {
         // Título.
         font = Font.loadFont("file:src/main/resources/fonts/Lobster-Regular.ttf", 64);
-        title = new Text("Juego Loteria Mexicana");
+        title = new Text("Juego Lotería Mexicana");
         title.setFont(font);
         title.setFill(Color.rgb(208, 71, 100));
 
