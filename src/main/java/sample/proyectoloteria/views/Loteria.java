@@ -75,6 +75,7 @@ public class Loteria extends Stage {
     }
 
     private void createUI() {
+        // Título.
         font = Font.loadFont("file:src/main/resources/fonts/Lobster-Regular.ttf", 64);
         title = new Text("Juego Loteria Mexicana");
         title.setFont(font);
@@ -86,25 +87,21 @@ public class Loteria extends Stage {
         h_box_title.setPadding(new Insets(15, 0, 15, 0));
         h_box_title.getChildren().add(title);
 
-        // Manejar la plantilla anterior.
+        // Botón regresar a la plantilla anterior.
         btn_prev = new Button("Atrás");
         btn_prev.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 prevBoard();
-
-                renderBoard();
             }
         });
         btn_prev.setPrefWidth(100);
-        // Manejar la plantilla siguiente.
+        // Botón ir a la plantilla siguiente.
         btn_next = new Button("Siguiente");
         btn_next.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 nextBoard();
-
-                renderBoard();
             }
         });
         btn_next.setPrefWidth(100);
@@ -113,47 +110,50 @@ public class Loteria extends Stage {
         lbl_time = new Label();
         lbl_time.textProperty().bind(time_seconds.asString());
 
+        // Contenedor del contador de tiempo (label_time).
         h_box_timer = new HBox();
         h_box_timer.setAlignment(Pos.CENTER);
         h_box_timer.getChildren().add(lbl_time);
 
-        // Contenedor de botones controladores.
+        // Contenedor de botones 'siguiente' y 'atrás'.
         h_box_buttons = new HBox();
         h_box_buttons.setSpacing(5);
         h_box_buttons.setAlignment(Pos.CENTER);
         h_box_buttons.getChildren().addAll(btn_prev, btn_next);
 
-        // Grid Pane para las plantillas.
+        // GridPane para las plantillas.
         gdp_board = new GridPane();
         gdp_board.setPadding(new Insets(15, 15, 15, 15));
         gdp_board.setHgap(15);
         gdp_board.setVgap(15);
 
+        // Contenedor de las plantillas y los botones 'siguiente' y 'atrás'.
         v_box_board = new VBox();
         v_box_board.getChildren().addAll(h_box_buttons, gdp_board);
 
-        // Grid Pane para las cartas.
+        // GridPane para las cartas.
         gdp_card = new GridPane();
         gdp_card.setPadding(new Insets(15, 15, 15, 15));
         gdp_card.setHgap(15);
         gdp_card.setVgap(15);
 
+        // Contenedor del mazo y del timer para cambiar de carta.
         v_box_card = new VBox();
         v_box_card.getChildren().addAll(h_box_timer, gdp_card);
 
-        // Muestra la primer plantilla (0).
+        // Muestra la primera plantilla (0).
         renderBoard();
 
-        // Muestra la primer carta del mazo.
+        // Muestra la primera carta del mazo (0).
         renderCard();
 
-        // Contenedor de las plantillas y las cartas.
+        // Contenedor de las plantillas, cartas y sus controladores.
         h_box2 = new HBox();
         h_box2.setAlignment(Pos.CENTER);
         h_box2.getChildren().addAll(v_box_board, v_box_card);
 
         // Botón jugar.
-        // Empieza a sacar cartas del mazo y deshabilita el boton cuando este es presionado.
+        // Empieza a sacar cartas del mazo y deshabilita el botón cuando este es presionado.
         btn_play = new Button("Jugar");
         btn_play.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
@@ -173,12 +173,12 @@ public class Loteria extends Stage {
         h_box3.getChildren().addAll(btn_play);
 
         // Layout principal.
-        // Contiene a los botones, plantillas y cartas.
+        // Contiene el título, plantillas, cartas y sus respectivos botones.
         v_box_container = new VBox();
         v_box_container.getStyleClass().add("bg-3");
         v_box_container.getChildren().addAll(h_box_title, h_box2, h_box3);
 
-        // Vista principal.
+        // Ventana principal.
         scene = new Scene(v_box_container, 800, 600);
         // Hoja de estilos CSS.
         scene.getStylesheets().add(String.valueOf(this.getClass().getResource("/style.css")));
@@ -197,7 +197,7 @@ public class Loteria extends Stage {
      **/
     private void renderBoard() {
         // row y col establecen la posición de una carta dentro de la plantilla.
-        // counter se encarga de contar el número de cartas añadidas a la plantilla.
+        // counter se encarga de iterar el número de cartas añadidas a la plantilla.
         int row = 0, col = 0, counter = 0;
 
         gdp_board.getChildren().clear();
@@ -274,6 +274,8 @@ public class Loteria extends Stage {
         current_board--;
 
         if (current_board < 0) current_board = 4;
+
+        renderBoard();
     }
 
     /**
@@ -285,6 +287,8 @@ public class Loteria extends Stage {
         current_board++;
 
         if (current_board > 4) current_board = 0;
+
+        renderBoard();
     }
 
     /**
@@ -322,8 +326,8 @@ public class Loteria extends Stage {
     }
 
     /**
-     * Muestra una cuenta regresiva de 15 segundos, el cual indica el tiempo dado para ir marcando cartas con la carta
-     * actual que aparecen el mazo.
+     * Muestra una cuenta regresiva de 15 segundos, el cual indica el tiempo dado para comparar una carta de la
+     * plantilla con la actual mostrada en el mazo.
      **/
     private void startCountDownTimer() {
         if (time_line != null) time_line.stop();

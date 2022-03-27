@@ -209,8 +209,8 @@ public class LoteriaImages {
         while (cards_added < random_cards.length) {
             random_card = generateRandomCard();
 
-            // La primer carta del arreglo siempre será la carta volteada, esto para dar la impresión de que todavía
-            // no se barajea el mazo.
+            // La primer carta del arreglo siempre será la 'carta volteada', esto para indicar que las cartas aún no
+            // empiezan a mostrarse.
             if (cards_added < 1) {
                 random_cards[0] = CARDS[0];
 

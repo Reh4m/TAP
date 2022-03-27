@@ -26,7 +26,7 @@ public class Card {
     /**
      * Define el índice de la carta al momento de ser añadido a una plantilla.
      *
-     * Este nos ayudará a saber dónde se encuentra una carta dentro de una plantilla cualquiera.
+     * Nos ayudará a saber dónde se encuentra una carta dentro de una plantilla cualquiera.
      **/
     private int index_card_added;
 
