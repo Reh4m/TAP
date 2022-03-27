@@ -200,6 +200,8 @@ public class Loteria extends Stage {
         // counter se encarga de contar el número de cartas añadidas a la plantilla.
         int row = 0, col = 0, counter = 0;
 
+        gdp_board.getChildren().clear();
+
         for (Card card : LoteriaImages.BOARDS[current_board]) {
             // Al llegar a la cuarta fila se pasa a la siguiente columna desde la fila 0 nuevamente.
             if (row == 4) {
