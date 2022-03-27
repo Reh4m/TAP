@@ -19,8 +19,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -54,9 +52,14 @@ public class Loteria extends Stage {
     private int current_card_image = 0;
 
     /**
-     *  Proporciona los datos de la carta actual que se muestra en el mazo.
+     * Proporciona los datos de la carta actual que se muestra en el mazo.
      **/
     private Card current_card_data;
+
+    /**
+     * Indica si el juego está activo o ya ha comenzado, por defecto está inactivo.
+     **/
+    private boolean is_active = false;
 
     private final Integer START_TIME = 15;
     private final IntegerProperty time_seconds = new SimpleIntegerProperty(START_TIME);
@@ -156,6 +159,7 @@ public class Loteria extends Stage {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 btn_play.setDisable(true);
+                is_active = true;
 
                 changeCardTimer();
             }
@@ -213,7 +217,7 @@ public class Loteria extends Stage {
             image_view.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    handleCardClicked(card);
+                    if (is_active) handleCardClicked(card);
                 }
             });
 
@@ -250,6 +254,7 @@ public class Loteria extends Stage {
             if (checkIfUserWon()) {
                 timer.cancel();
                 time_line.stop();
+                is_active = false;
                 btn_play.setText("Juego terminado");
                 showWinnerMessage();
             }
@@ -352,6 +357,7 @@ public class Loteria extends Stage {
                 } else {
                     Platform.runLater(() -> {
                         timer.cancel();
+                        is_active = false;
                         btn_play.setText("Juego terminado");
                         showGameOverMessage();
                     });
