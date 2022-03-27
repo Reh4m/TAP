@@ -23,11 +23,11 @@
 }
 
 .bg-6 {
-    -fx-background-color: #c4c4ff;
+    -fx-background-color: #227c9d;
 }
 
 Button, Label {
-    -fx-background-color: #f8f9fa;
+    -fx-background-color: #fef9ef;
     -fx-font: 14px "serief";
     -fx-padding: 10;
     -fx-cursor: pointer;
