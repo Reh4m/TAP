@@ -175,12 +175,12 @@ public class LoteriaImages {
     }
 
     /**
-     * Crea un objeto Card con la imagen de un frijol simulando que la carta ya se encuentra inhabilitada.
+     * Crea un objeto Card con una imagen simulando que la carta ya se encuentra inhabilitada.
      *
      * @return un objeto Card con una nueva imagen.
      **/
     public static Card getDisableCard() {
-        Card disable_card = new Card("frijol", "frijol.jpg", 0);
+        Card disable_card = new Card("match", "match.png", 0);
 
         disable_card.disableCard();
 
