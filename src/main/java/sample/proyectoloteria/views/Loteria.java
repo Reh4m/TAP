@@ -31,13 +31,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Loteria extends Stage {
-    private VBox v_box_container;
-    private HBox h_box_title, h_box1, h_box2, h_box3;
+    private Scene scene;
+    private VBox v_box_container, v_box_board, v_box_card;
+    private HBox h_box_title, h_box_buttons, h_box_timer, h_box2, h_box3;
     private Button btn_prev, btn_next, btn_play;
     private Label lbl_time;
     private GridPane gdp_board, gdp_card;
-    private Scene scene;
     private ImageView image_view;
+    private Font font;
+    private Text title;
     private Timeline time_line;
     private final Timer timer = new Timer();
 
@@ -74,6 +76,7 @@ public class Loteria extends Stage {
         title.setFont(Font.font("Times New Roman", FontWeight.LIGHT, FontPosture.REGULAR, 45));
         title.setFill(Color.BLACK);
 
+        // HBox contenedor del título.
         h_box_title = new HBox();
         h_box_title.setAlignment(Pos.CENTER);
         h_box_title.setPadding(new Insets(15, 0, 15, 0));
@@ -106,11 +109,15 @@ public class Loteria extends Stage {
         lbl_time = new Label();
         lbl_time.textProperty().bind(time_seconds.asString());
 
+        h_box_timer = new HBox();
+        h_box_timer.setAlignment(Pos.CENTER);
+        h_box_timer.getChildren().add(lbl_time);
+
         // Contenedor de botones controladores.
-        h_box1 = new HBox();
-        h_box1.setSpacing(5);
-        h_box1.setAlignment(Pos.CENTER);
-        h_box1.getChildren().addAll(btn_prev, btn_next, lbl_time);
+        h_box_buttons = new HBox();
+        h_box_buttons.setSpacing(5);
+        h_box_buttons.setAlignment(Pos.CENTER);
+        h_box_buttons.getChildren().addAll(btn_prev, btn_next);
 
         // Grid Pane para las plantillas.
         gdp_board = new GridPane();
@@ -118,11 +125,17 @@ public class Loteria extends Stage {
         gdp_board.setHgap(15);
         gdp_board.setVgap(15);
 
+        v_box_board = new VBox();
+        v_box_board.getChildren().addAll(h_box_buttons, gdp_board);
+
         // Grid Pane para las cartas.
         gdp_card = new GridPane();
         gdp_card.setPadding(new Insets(15, 15, 15, 15));
         gdp_card.setHgap(15);
         gdp_card.setVgap(15);
+
+        v_box_card = new VBox();
+        v_box_card.getChildren().addAll(h_box_timer, gdp_card);
 
         // Muestra la primer plantilla (0).
         renderBoard();
@@ -133,7 +146,7 @@ public class Loteria extends Stage {
         // Contenedor de las plantillas y las cartas.
         h_box2 = new HBox();
         h_box2.setAlignment(Pos.CENTER);
-        h_box2.getChildren().addAll(gdp_board, gdp_card);
+        h_box2.getChildren().addAll(v_box_board, v_box_card);
 
         // Botón jugar.
         // Empieza a sacar cartas del mazo y deshabilita el boton cuando este es presionado.
@@ -158,7 +171,7 @@ public class Loteria extends Stage {
         // Contiene a los botones, plantillas y cartas.
         v_box_container = new VBox();
         v_box_container.getStyleClass().add("bg-3");
-        v_box_container.getChildren().addAll(h_box_title, h_box1, h_box2, h_box3);
+        v_box_container.getChildren().addAll(h_box_title, h_box2, h_box3);
 
         // Vista principal.
         scene = new Scene(v_box_container, 800, 600);
