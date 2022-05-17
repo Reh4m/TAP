@@ -1,9 +1,8 @@
 package sample.proyectoloteria.classes;
 
 import javafx.scene.image.Image;
+import sample.proyectoloteria.util.Images;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Objects;
 
 public class Card {
@@ -29,8 +28,6 @@ public class Card {
      * Nos ayudará a saber dónde se encuentra una carta dentro de una plantilla cualquiera.
      **/
     private int index_card_added;
-
-    private final String IMAGES_PATH = "src/main/java/sample/proyectoloteria/assets/";
 
     /**
      * @param card_name nombre propio de la carta,
@@ -80,17 +77,7 @@ public class Card {
      * @return el objeto Image (carta) para ser visualizado por pantalla.
      **/
     public Image getImage() {
-        FileInputStream image = null;
-
-        try {
-            image = new FileInputStream(IMAGES_PATH + this.image_name);
-        } catch (FileNotFoundException e) {
-            System.err.println("Could not open file.");
-            System.err.println(e.getMessage());
-            System.exit(0);
-        }
-
-        return new Image(image);
+        return Images.getImage(this.image_name);
     }
 
     /**
