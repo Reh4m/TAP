@@ -12,6 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import sample.proyectoloteria.util.Images;
 
 import java.io.*;
 import java.util.HashMap;
@@ -44,7 +45,7 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
 
         toolbar_menu = new ToolBar();
 
-        img_open_file = getImage();
+        img_open_file = Images.getImage("7265_mail_open_icon.png");
         imv_open_file = new ImageView(img_open_file);
         imv_open_file.setFitHeight(25);
         imv_open_file.setFitWidth(25);
@@ -69,20 +70,6 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
         v_box.setPadding(new Insets(5));
 
         scene = new Scene(v_box, 500, 300);
-    }
-
-    private Image getImage() {
-        FileInputStream image = null;
-
-        try {
-            image = new FileInputStream(IMAGES_PATH + "7265_mail_open_icon.png");
-        } catch (FileNotFoundException e) {
-            System.err.println("Could not open file.");
-            System.err.println(e.getMessage());
-            System.exit(0);
-        }
-
-        return new Image(image);
     }
 
     private void selectFile() {
