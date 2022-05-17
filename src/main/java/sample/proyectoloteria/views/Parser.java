@@ -9,6 +9,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -25,13 +26,11 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
     private ToolBar toolbar_menu;
     private TextArea txt_input, txt_output;
     private FileChooser flc_file;
-    private Button btn_open_file;
+    private Button btn_open_file, btn_convert_text;
     private Image img_open_file;
     private ImageView imv_open_file;
 
     private final Map<String, String> ALPHABET = new HashMap<>();
-
-    private final String IMAGES_PATH = "src/main/java/sample/proyectoloteria/assets/";
 
     public Parser() {
         createUI();
@@ -52,9 +51,7 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
 
         btn_open_file = new Button();
         btn_open_file.setGraphic(imv_open_file);
-        btn_open_file.setOnAction(event -> {
-            selectFile();
-        });
+        btn_open_file.setOnAction(event -> selectFile());
 
         toolbar_menu.getItems().addAll(btn_open_file);
 
@@ -65,7 +62,16 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
         txt_output = new TextArea();
         txt_output.setEditable(false);
 
-        v_box.getChildren().addAll(toolbar_menu, txt_input, txt_output);
+        btn_convert_text = new Button("Parsear");
+        btn_convert_text.setPrefWidth(600);
+        btn_convert_text.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("morse code");
+            }
+        });
+
+        v_box.getChildren().addAll(toolbar_menu, txt_input, txt_output, btn_convert_text);
         v_box.setSpacing(5);
         v_box.setPadding(new Insets(5));
 
