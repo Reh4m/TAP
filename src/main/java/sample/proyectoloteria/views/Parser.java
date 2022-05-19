@@ -16,10 +16,7 @@ import javafx.stage.Stage;
 import sample.proyectoloteria.util.Images;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Scanner;
+import java.util.*;
 
 public class Parser extends Stage implements EventHandler<KeyEvent> {
     private Scene scene;
@@ -75,7 +72,7 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
         btn_convert_text.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                System.out.println("morse code");
+                System.out.println("...");
             }
         });
 
@@ -86,18 +83,39 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
         scene = new Scene(v_box, 500, 300);
     }
 
+    /**
+     * Muestra un diálogo de apertura de archivos, el cual será nuestro archivo fuente que se quiere traducir.
+     * Permite solamente abrir archivos de texto, dicho de otra forma, sólo aquellos archivos con extensión .txt serán
+     * leídos.
+     * Una vez seleccionado el archivo, se procede a obtener el texto dentro de él.
+     */
     private void selectFile() {
         flc_file = new FileChooser();
         flc_file.setTitle("Seleccionar archivo");
+        flc_file.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("Text Files", "*.txt")
+        );
 
         File source = flc_file.showOpenDialog(this);
 
-        System.out.println(readFile(source));
+        if (source != null) onFileSelected(source);
+    }
+
+    /**
+     * Acciones a ejecutar una vez que el archivo ha sido seleccionado.
+     * Primero, borra el contenido dentro del TextArea de entrada para después poder insertar los caracteres recuperados
+     * desde el archivo seleccionado anteriormente.
+     *
+     * @param source archivo a escanear.
+     */
+    private void onFileSelected(File source) {
+        txt_input.clear();
+
+        txt_input.appendText(readFile(source));
     }
 
     /**
      * Recupera el texto (caracteres) a traducir escaneando el contenido del archivo especificado.
-     * Posteriormente, inserta los caracteres recuperados al contenido del TextArea.
      *
      * @param source archivo a escanear.
      * @return cadena de texto a ser traducido.
@@ -106,15 +124,12 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
         String content = null;
 
         try {
-            // El método useDelimiter establece el patrón de delimitación, esto al momento de coincicir con un salto de
+            // El método useDelimiter establece el patrón de delimitación, esto al momento de coincidir con un salto de
             // línea al escanear el archivo de texto.
             content = new Scanner(source).useDelimiter("//Z").next();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-        // Agrega el texto al contenido del TextArea de entrada.
-        txt_input.appendText(content);
 
         return content;
     }
