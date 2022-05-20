@@ -86,8 +86,7 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
     /**
      * Muestra un diálogo de apertura de archivos, el cual será nuestro archivo fuente que se quiere traducir.
      * Permite solamente abrir archivos de texto, dicho de otra forma, sólo aquellos archivos con extensión .txt serán
-     * leídos.
-     * Una vez seleccionado el archivo, se procede a obtener el texto dentro de él.
+     * leídos. Una vez seleccionado el archivo, se procede a obtener el texto dentro de él.
      */
     private void selectFile() {
         flc_file = new FileChooser();
@@ -102,9 +101,8 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
     }
 
     /**
-     * Acciones a ejecutar una vez que el archivo ha sido seleccionado.
-     * Primero, borra el contenido dentro del TextArea de entrada para después poder insertar los caracteres recuperados
-     * desde el archivo seleccionado anteriormente.
+     * Acciones a ejecutar una vez que el archivo ha sido seleccionado. Primero, borra el contenido dentro del TextArea
+     * de entrada para después poder insertar los caracteres recuperados desde el archivo seleccionado anteriormente.
      *
      * @param source archivo a escanear.
      */
@@ -135,9 +133,9 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
     }
 
     /**
-     * Lee la lista de propiedades (alfabeto del Código Morse) y lo carga al objeto properties.
-     * Posteriormente, haciendo uso de la interfaz Map, asigna la colección de claves (letras) y valores (código morse)
-     * recuperados desde properties y los asocia a la clase HashMap alphabet.
+     * Lee la lista de propiedades (alfabeto Morse) y lo carga al objeto properties. Posteriormente, haciendo uso de la
+     * interfaz Map, asigna la colección de claves (letras) y valores (código morse) recuperados desde properties y los
+     * asocia a la clase HashMap alphabet.
      */
     private void loadProperties() {
         try {
@@ -156,7 +154,7 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
     }
 
     /**
-     * Busca la clave (letra) dentro del alfabeto del Código Morse y devuelve el valor al que está asignada dicha clave.
+     * Busca la clave (letra) dentro del alfabeto Morse y devuelve el valor al que está asignada dicha clave.
      *
      * @return una lista que contiene el texto traducido.
      */
@@ -174,7 +172,7 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
     }
 
     /**
-     * Por medio de una lista, itera las 'palabras' del Código Morse y las inserta dentro del TextArea de salida.
+     * Por medio de una lista, itera las 'palabras' del código Morse y las inserta dentro del TextArea de salida.
      *
      * @param words_in_morse lista que contiene el texto a traducir.
      */
