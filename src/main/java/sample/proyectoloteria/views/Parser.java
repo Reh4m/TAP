@@ -154,7 +154,8 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
     }
 
     /**
-     * Busca la clave (letra) dentro del alfabeto Morse y devuelve el valor al que está asignada dicha clave.
+     * Crea una lista en la cual se guarda el texto traducido a código Morse. Este se obtiene al buscar cada letra del
+     * texto en el alfabeto Morse y devolver su respectiva traducción.
      *
      * @return una lista que contiene el texto traducido.
      */
@@ -165,10 +166,22 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
         char[] text_letters = txt_input.getText().toCharArray();
 
         for (char letter : text_letters) {
-            words_in_morse.add(alphabet.get(String.valueOf(letter).toUpperCase()) + " ");
+            words_in_morse.add(getMorseAlphabetWord(letter) + " ");
         }
 
         return words_in_morse;
+    }
+
+    /**
+     * Busca la clave (letra) dentro del alfabeto Morse y devuelve el valor al que está asignada dicha clave.
+     *
+     * @param letter letra a buscar en el alfabeto Morse.
+     * @return el código Morse correspondiente a la letra.
+     */
+    private String getMorseAlphabetWord(char letter) {
+        String morse_word = alphabet.get(String.valueOf(letter).toUpperCase());
+
+        return morse_word != null ? morse_word : "";
     }
 
     /**
@@ -177,8 +190,8 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
      * @param words_in_morse lista que contiene el texto a traducir.
      */
     private void writeToTextArea(List<String> words_in_morse) {
-        for (String word : words_in_morse) {
-            txt_output.appendText(word);
+        for (String morse_word : words_in_morse) {
+            txt_output.appendText(morse_word);
         }
     }
 
