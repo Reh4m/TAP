@@ -72,7 +72,7 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
         btn_convert_text.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                System.out.println("...");
+                writeToTextArea(convertTextToMorse());
             }
         });
 
@@ -152,6 +152,35 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
         // Asignación de claves y valores.
         for (String letter : properties.stringPropertyNames()) {
             alphabet.put(letter, properties.getProperty(letter));
+        }
+    }
+
+    /**
+     * Busca la clave (letra) dentro del alfabeto del Código Morse y devuelve el valor al que está asignada dicha clave.
+     *
+     * @return una lista que contiene el texto traducido.
+     */
+    private ArrayList<String> convertTextToMorse() {
+        ArrayList<String> words_in_morse = new ArrayList<>();
+
+        // Convierte el texto dentro del TextArea de entrada a un arreglo de caracteres (letras).
+        char[] text_letters = txt_input.getText().toCharArray();
+
+        for (char letter : text_letters) {
+            words_in_morse.add(alphabet.get(String.valueOf(letter).toUpperCase()) + " ");
+        }
+
+        return words_in_morse;
+    }
+
+    /**
+     * Por medio de una lista, itera las 'palabras' del Código Morse y las inserta dentro del TextArea de salida.
+     *
+     * @param words_in_morse lista que contiene el texto a traducir.
+     */
+    private void writeToTextArea(List<String> words_in_morse) {
+        for (String word : words_in_morse) {
+            txt_output.appendText(word);
         }
     }
 
