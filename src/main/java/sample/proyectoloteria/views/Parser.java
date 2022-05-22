@@ -10,7 +10,6 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -78,12 +77,7 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
 
         btn_convert_text = new Button("Parsear");
         btn_convert_text.setPrefWidth(600);
-        btn_convert_text.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                writeTextToMorse();
-            }
-        });
+        btn_convert_text.setOnAction(event -> writeTextToMorse());
 
         v_box.getChildren().addAll(toolbar_menu, txt_input, txt_output, btn_convert_text);
         v_box.setSpacing(5);
