@@ -28,7 +28,7 @@ import java.util.Scanner;
 
 public class Parser extends Stage implements EventHandler<KeyEvent> {
     private Scene scene;
-    private VBox v_box;
+    private VBox v_box_container;
     private ToolBar toolbar_menu;
     private TextArea txt_input, txt_output;
     private FileChooser flc_file;
@@ -36,6 +36,8 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
     private Image img_open_file;
     private ImageView imv_open_file;
 
+    // Alfabeto Morse.
+    // Guarda la letra del abecedario como la clave y su respectiva traducción a código Morse como el valor.
     private final Map<String, String> alphabet = new HashMap<>();
 
     Properties properties = new Properties();
@@ -44,46 +46,54 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
         // Instancia el contenido de la ventana.
         createUI();
 
-        // Carga el alfabeto del Código Morse.
+        // Carga el alfabeto Morse.
         loadProperties();
 
-        this.setTitle("Traductor de Código Morse");
+        this.setTitle("Traductor de código Morse");
         this.setScene(scene);
         this.show();
     }
 
     private void createUI() {
-        v_box = new VBox();
-
-        toolbar_menu = new ToolBar();
-
+        // Imagen o icono para el botón de apertura de archivos.
         img_open_file = Images.getImage("7265_mail_open_icon.png");
         imv_open_file = new ImageView(img_open_file);
         imv_open_file.setFitHeight(25);
         imv_open_file.setFitWidth(25);
 
+        // Botón para seleccionar el archivo a traducir.
         btn_open_file = new Button();
         btn_open_file.setGraphic(imv_open_file);
         btn_open_file.setOnAction(event -> selectFile());
 
+        // ToolBar contenedor del botón de apertura de archivos.
+        toolbar_menu = new ToolBar();
         toolbar_menu.getItems().addAll(btn_open_file);
 
+        // TextArea de entrada, contiene el texto a traducir.
         txt_input = new TextArea();
         txt_input.setPromptText("Introduce el texto a parsear");
         txt_input.setOnKeyPressed(this);
 
+        // TextArea de salida, contiene el texto traducido a código Morse.
         txt_output = new TextArea();
         txt_output.setEditable(false);
 
+        // Botón para mostrar la traducción a código Morse del texto escrito.
         btn_convert_text = new Button("Parsear");
         btn_convert_text.setPrefWidth(600);
         btn_convert_text.setOnAction(event -> writeTextToMorse());
 
-        v_box.getChildren().addAll(toolbar_menu, txt_input, txt_output, btn_convert_text);
-        v_box.setSpacing(5);
-        v_box.setPadding(new Insets(5));
+        // Layout principal.
+        // Contiene el ToolBar con su respectivo botón, los TextArea de entrada y salida, y el botón para traducir el
+        // texto a código Morse.
+        v_box_container = new VBox();
+        v_box_container.getChildren().addAll(toolbar_menu, txt_input, txt_output, btn_convert_text);
+        v_box_container.setSpacing(5);
+        v_box_container.setPadding(new Insets(5));
 
-        scene = new Scene(v_box, 500, 300);
+        // Ventana principal.
+        scene = new Scene(v_box_container, 500, 300);
     }
 
     /**
