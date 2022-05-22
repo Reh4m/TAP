@@ -1,5 +1,6 @@
 package sample.proyectoloteria.views;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -15,8 +16,16 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import sample.proyectoloteria.util.Images;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Scanner;
 
 public class Parser extends Stage implements EventHandler<KeyEvent> {
     private Scene scene;
@@ -72,7 +81,7 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
         btn_convert_text.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                writeToTextArea(convertTextToMorse());
+                writeTextToMorse();
             }
         });
 
@@ -195,8 +204,21 @@ public class Parser extends Stage implements EventHandler<KeyEvent> {
         }
     }
 
+    /**
+     * En términos generales, traduce el texto que contiene el TextArea de entrada y muestra su respectiva traducción a
+     * código Morse en el TextArea de salida, aunque realmente cada una de estas acciones tiene su respectivo método
+     * que es llamado dentro del bloque de código.
+     */
+    private void writeTextToMorse() {
+        txt_output.clear();
+
+        writeToTextArea(convertTextToMorse());
+    }
+
     @Override
     public void handle(KeyEvent event) {
-        System.out.println(event.getCode().toString());
+        // Crea un hilo de ejecución esperando a que cada sentencia asignada finalice y poder realizar futuras acciones
+        // que dependen de eventos pasados.
+        Platform.runLater(this::writeTextToMorse);
     }
 }
