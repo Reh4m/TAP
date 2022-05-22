@@ -153,13 +153,16 @@ public class Loteria extends Stage {
         h_box2.getChildren().addAll(v_box_board, v_box_card);
 
         // Botón jugar.
-        // Empieza a sacar cartas del mazo y deshabilita el botón cuando este es presionado.
+        // Empieza a sacar las cartas del mazo y deshabilita el botón cuando este es presionado. Así mismo,
+        // deshabilita los botones 'Atrás' y 'Siguiente', esto para evitar poder cambiar de plantilla durante el
+        // transcurso del juego.
         btn_play = new Button("Jugar");
         btn_play.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                btn_play.setDisable(true);
                 is_active = true;
+                btn_play.setDisable(true);
+                h_box_buttons.setDisable(true);
 
                 changeCardTimer();
             }
