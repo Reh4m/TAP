@@ -7,6 +7,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import sample.proyectoloteria.util.DBConnection;
 import sample.proyectoloteria.views.Loteria;
 import sample.proyectoloteria.views.Parser;
 
@@ -54,6 +55,9 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.setMaximized(true);
         stage.show();
+
+        // Conexión a la base de datos.
+        DBConnection.createConnection();
     }
 
     public static void main(String[] args) {
