@@ -352,7 +352,7 @@ public class Loteria extends Stage {
      * current_card_data se encarga de guardar los datos de la carta actual del mazo para posteriormente compararla.
      **/
     private void renderCard() {
-        image_view = new ImageView((CARDS[current_card_image].getImage()));
+        image_view = new ImageView(CARDS[current_card_image].getImage());
         image_view.setFitWidth(320);
         image_view.setFitHeight(525);
         gdp_card.add(image_view, 0, 0);

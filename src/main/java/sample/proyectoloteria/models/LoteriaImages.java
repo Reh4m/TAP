@@ -106,7 +106,7 @@ public class LoteriaImages {
      * Cartas que serán utilizadas en el mazo.
      **/
     public final static Card[] CARDS = {
-        new Card("reverso", "reverso.jpg", 0),
+        new Card("reverso", "reverso.png", 0),
         new Card("gallo", "1.PNG", 1),
         new Card("diablo", "2.PNG", 2),
         new Card("dama", "3.PNG", 3),
