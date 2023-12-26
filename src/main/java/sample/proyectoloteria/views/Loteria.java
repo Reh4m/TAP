@@ -21,6 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import sample.proyectoloteria.classes.Card;
 import sample.proyectoloteria.models.LoteriaImages;
@@ -64,7 +65,7 @@ public class Loteria extends Stage {
     /**
      * Número de segundos que durará la cuenta regresiva para actualizar la carta actual.
      **/
-    private final Integer COUNTER_TIME = 15;
+    private final Integer COUNTER_TIME = 5;
     private final IntegerProperty time_seconds = new SimpleIntegerProperty(COUNTER_TIME);
 
     private final Card[] CARDS = LoteriaImages.getRandomCards();
@@ -75,7 +76,31 @@ public class Loteria extends Stage {
         this.setMaximized(true);
         this.setScene(scene);
         this.show();
+//        this.setOnCloseRequest(e -> onCloseWindow());
     }
+
+//    private void onCloseWindow() {
+//        if (is_active) {
+//            timer.cancel();
+//            time_line.stop();
+//
+//            for (Card card : LoteriaImages.BOARDS[current_board]) {
+//                if (card.getStatusCard()) {
+//                    card.enableCard();
+//
+//                    card.setImageName(card.getId() + ".PNG");
+//                }
+//            }
+//
+//            current_card_image = 0;
+//            is_active = false;
+//            time_seconds.set(COUNTER_TIME);
+//        }
+//
+//        current_board = 0;
+//
+//        this.close();
+//    }
 
     private void createUI() {
         // Título.
@@ -253,7 +278,7 @@ public class Loteria extends Stage {
         if (validateCards(card_clicked)) {
             LoteriaImages.disableSelectedCard(card_clicked, current_board);
 
-            image_view = new ImageView(LoteriaImages.getDisableCard().getImage());
+            image_view = new ImageView(LoteriaImages.getDisableCard(card_clicked).getImage());
             image_view.setFitWidth(70);
             image_view.setFitHeight(120);
 
@@ -377,7 +402,7 @@ public class Loteria extends Stage {
             }
         };
 
-        timer.scheduleAtFixedRate(task, 0, 15000);
+        timer.scheduleAtFixedRate(task, 0, COUNTER_TIME * 1000);
     }
 
     /**
