@@ -61,8 +61,11 @@ public class Loteria extends Stage {
      **/
     private boolean is_active = false;
 
-    private final Integer START_TIME = 15;
-    private final IntegerProperty time_seconds = new SimpleIntegerProperty(START_TIME);
+    /**
+     * Número de segundos que durará la cuenta regresiva para actualizar la carta actual.
+     **/
+    private final Integer COUNTER_TIME = 15;
+    private final IntegerProperty time_seconds = new SimpleIntegerProperty(COUNTER_TIME);
 
     private final Card[] CARDS = LoteriaImages.getRandomCards();
 
@@ -335,11 +338,11 @@ public class Loteria extends Stage {
     private void startCountDownTimer() {
         if (time_line != null) time_line.stop();
 
-        time_seconds.set(START_TIME);
+        time_seconds.set(COUNTER_TIME);
 
         time_line = new Timeline();
         time_line.getKeyFrames().add(
-            new KeyFrame(Duration.seconds(START_TIME + 1),
+            new KeyFrame(Duration.seconds(COUNTER_TIME + 1),
             new KeyValue(time_seconds, 0))
         );
         time_line.playFromStart();
