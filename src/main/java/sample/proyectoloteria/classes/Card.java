@@ -123,6 +123,13 @@ public class Card {
         this.is_disabled = true;
     }
 
+    /**
+     * Habilita la carta actual, esto para que pueda ser seleccionada nuevamente.
+     **/
+    public void enableCard() {
+        this.is_disabled = false;
+    }
+
     @Override
     public String toString() {
         return "Carta #" + id + ": " + card_name + " (" + image_name + ").";
