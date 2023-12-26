@@ -21,7 +21,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import sample.proyectoloteria.classes.Card;
 import sample.proyectoloteria.models.LoteriaImages;
@@ -76,32 +75,59 @@ public class Loteria extends Stage {
         this.setMaximized(true);
         this.setScene(scene);
         this.show();
-//        this.setOnCloseRequest(e -> onCloseWindow());
+        this.setOnCloseRequest(e -> onCloseWindow());
     }
 
-//    private void onCloseWindow() {
-//        if (is_active) {
-//            timer.cancel();
-//            time_line.stop();
-//
-//            for (Card card : LoteriaImages.BOARDS[current_board]) {
-//                if (card.getStatusCard()) {
-//                    card.enableCard();
-//
-//                    card.setImageName(card.getId() + ".PNG");
-//                }
-//            }
-//
-//            current_card_image = 0;
-//            is_active = false;
-//            time_seconds.set(COUNTER_TIME);
-//        }
-//
-//        current_board = 0;
-//
-//        this.close();
-//    }
+    /**
+     * Al cerrar la ventana se detiene el juego y se habilitan todas las cartas de la plantilla actual, esto para
+     * que al momento de cargar nuevamente la ventana se muestren todas las cartas habilitadas.
+     **/
+    private void onCloseWindow() {
+        if (is_active) {
+            stopGame();
+            enableSelectedCards();
+        }
 
+        resetGame();
+    }
+
+    /**
+     * Habilita aquellas cartas que fueron seleccionadas (deshabilitadas) de la plantilla actual.
+     **/
+    private void enableSelectedCards() {
+        for (Card card : LoteriaImages.BOARDS[current_board]) {
+            if (card.getStatusCard()) {
+                card.enableCard();
+
+                card.setImageName(card.getId() + ".PNG");
+            }
+        }
+    }
+
+    /**
+     * Detiene el timer y la cuenta regresiva. Esto para evitar que el juego siga corriendo en segundo plano.
+     * Por último, cambia el estado del juego a inactivo.
+     **/
+    private void stopGame() {
+        timer.cancel();
+        time_line.stop();
+        is_active = false;
+    }
+
+    /**
+     * Reinicia el juego, estableciendo el índice de la carta actual y de la plantilla actual a cero.
+     **/
+    private void resetGame() {
+        current_card_image = 0;
+        current_board = 0;
+        this.close();
+    }
+
+    /**
+     * Crea la interfaz gráfica de la vista Lotería.
+     *
+     * Se encarga de crear los contenedores, botones, labels, etc. que se mostrarán en pantalla.
+     **/
     private void createUI() {
         // Título.
         font = Font.loadFont("file:src/main/resources/fonts/Lobster-Regular.ttf", 64);
@@ -285,9 +311,7 @@ public class Loteria extends Stage {
             gdp_board.add(image_view, card_clicked.getAxisX(), card_clicked.getAxisY());
 
             if (checkIfUserWon()) {
-                timer.cancel();
-                time_line.stop();
-                is_active = false;
+                stopGame();
                 btn_play.setText("Juego terminado");
                 showWinnerMessage();
             }
@@ -393,8 +417,7 @@ public class Loteria extends Stage {
                     });
                 } else {
                     Platform.runLater(() -> {
-                        timer.cancel();
-                        is_active = false;
+                        stopGame();
                         btn_play.setText("Juego terminado");
                         showGameOverMessage();
                     });

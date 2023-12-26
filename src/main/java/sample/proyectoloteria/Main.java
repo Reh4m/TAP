@@ -1,6 +1,7 @@
 package sample.proyectoloteria;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -54,6 +55,10 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.setMaximized(true);
         stage.show();
+        stage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
     }
 
     public static void main(String[] args) {
